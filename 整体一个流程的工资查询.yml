@@ -1,0 +1,673 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 参数提取来查询
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables:
+  - description: ''
+    id: fd26ca98-43d0-4f36-a671-afe7960e925b
+    name: id
+    selector:
+    - conversation
+    - id
+    value: 0
+    value_type: number
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: parameter-extractor
+      id: 1739623143310-source-1739623467687-target
+      source: '1739623143310'
+      sourceHandle: source
+      target: '1739623467687'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: parameter-extractor
+        targetType: if-else
+      id: 1739623467687-source-1739624487797-target
+      source: '1739623467687'
+      sourceHandle: source
+      target: '1739624487797'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1739624487797-true-1739624449523-target
+      source: '1739624487797'
+      sourceHandle: 'true'
+      target: '1739624449523'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: answer
+      id: 1739624487797-false-1739624605351-target
+      source: '1739624487797'
+      sourceHandle: 'false'
+      target: '1739624605351'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: parameter-extractor
+      id: 1739624449523-source-1739628358123-target
+      source: '1739624449523'
+      sourceHandle: source
+      target: '1739628358123'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: parameter-extractor
+        targetType: llm
+      id: 1739628358123-source-1739630972959-target
+      source: '1739628358123'
+      sourceHandle: source
+      target: '1739630972959'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: parameter-extractor
+      id: 1739630972959-source-1739634421282-target
+      source: '1739630972959'
+      sourceHandle: source
+      target: '1739634421282'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: parameter-extractor
+        targetType: http-request
+      id: 1739634421282-source-1739628600956-target
+      source: '1739634421282'
+      sourceHandle: source
+      target: '1739628600956'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: llm
+      id: 1739628600956-source-1739669310378-target
+      source: '1739628600956'
+      sourceHandle: source
+      target: '1739669310378'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1739669310378-source-answer-target
+      source: '1739669310378'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 53
+      id: '1739623143310'
+      position:
+        x: 12.718793744675821
+        y: 283
+      positionAbsolute:
+        x: 12.718793744675821
+        y: 283
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1739623467687.name#}}
+
+          时间为{{#1739623467687.time#}}
+
+          id值为 {{#1739628358123.id#}}
+
+
+          API请求的输出{{#1739628600956.body#}}
+
+
+          最后的输出：{{#1739669310378.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 178
+      id: answer
+      position:
+        x: 2736.4270033558123
+        y: 315.33831174147093
+      positionAbsolute:
+        x: 2736.4270033558123
+        y: 315.33831174147093
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        instruction: 从文本中提取name，从文本中提取出time，并将其作为参数输出；
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4
+          provider: openai
+        parameters:
+        - description: 提取出的人名
+          name: name
+          required: false
+          type: string
+        - description: 提取出时间
+          name: time
+          required: false
+          type: number
+        query:
+        - sys
+        - query
+        reasoning_mode: prompt
+        selected: false
+        title: 从输入查询语句中提取名字和时间
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 97
+      id: '1739623467687'
+      position:
+        x: 307.56952789809617
+        y: 283
+      positionAbsolute:
+        x: 307.56952789809617
+        y: 283
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4
+          provider: openai
+        prompt_template:
+        - id: 599b91d1-273c-4c4f-9c3b-c542a47c5bca
+          role: system
+          text: 你是一个把name映射成id的映射工具，在字典中查找name值，输出对应的id值
+        - id: 6e4d624d-98ee-4c8a-8768-c18d863ab354
+          role: user
+          text: '输入是：{{#1739623467687.name#}}，输出是对应的id值
+
+
+            目前的字典为：
+
+            {"王雪璠":854, "于小茜":491}
+
+
+            **说明 (<instructions>)：**使用字典，将名字映射为值。
+
+            **示例 1(<examples>)：**
+
+            字典为：
+
+            { "王雪璠":854, "于 小茜":491, "肖 武艶": 607,
+
+            "陸崢銘":821}
+
+            输入：陸崢銘，
+
+            输出：821
+
+
+            **示例 2(<examples>)：**
+
+            字典为：
+
+            { "王雪璠":854, "于 小茜":491, "肖武艶": 607,
+
+            "陸 崢銘":821}
+
+            输入：肖武艶，
+
+            输出：607'
+        selected: false
+        title: LLM名字对应的id文本
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 97
+      id: '1739624449523'
+      position:
+        x: 890.8119900212156
+        y: 315.33831174147093
+      positionAbsolute:
+        x: 890.8119900212156
+        y: 315.33831174147093
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: contains
+            id: b5153f6e-3a7b-49d3-8ca2-47a8f1d7f7d2
+            value: 王雪璠
+            varType: string
+            variable_selector:
+            - '1739623467687'
+            - name
+          - comparison_operator: contains
+            id: c83489a2-0dd1-46f6-b2fc-30cc0eca58f8
+            value: 于小茜
+            varType: string
+            variable_selector:
+            - '1739623467687'
+            - name
+          - comparison_operator: contains
+            id: e4c4fb12-2c4d-480a-88dc-8a2762f75aef
+            value: 肖武艶
+            varType: string
+            variable_selector:
+            - '1739623467687'
+            - name
+          id: 'true'
+          logical_operator: or
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 177
+      id: '1739624487797'
+      position:
+        x: 598.5810253440408
+        y: 283
+      positionAbsolute:
+        x: 598.5810253440408
+        y: 283
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: 无法计算工资
+        desc: ''
+        selected: false
+        title: 直接回复 2
+        type: answer
+        variables: []
+      height: 99
+      id: '1739624605351'
+      position:
+        x: 718.8760599959738
+        y: 471.4340077723654
+      positionAbsolute:
+        x: 718.8760599959738
+        y: 471.4340077723654
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        instruction: 从文本中提取数字，并将其作为参数输出；
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4
+          provider: openai
+        parameters:
+        - description: 员工号
+          name: id
+          required: false
+          type: number
+        query:
+        - '1739624449523'
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: 提取出纯数字id
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 97
+      id: '1739628358123'
+      position:
+        x: 1164.603177245099
+        y: 315.33831174147093
+      positionAbsolute:
+        x: 1164.603177245099
+        y: 315.33831174147093
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        desc: ''
+        headers: Authorization:HdScKX9WAK/pZ2gdkas2LA==
+        method: post
+        params: 'employeeid:{{#1739628358123.id#}}
+
+          period:{{#1739634421282.yyyymm#}}'
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: api请求
+        type: http-request
+        url: https://sfinapi.itbank.co.jp/api/Employee/api_getemployeesalaryinfo
+        variables: []
+      height: 151
+      id: '1739628600956'
+      position:
+        x: 2018.3378608993603
+        y: 315.33831174147093
+      positionAbsolute:
+        x: 2018.3378608993603
+        y: 315.33831174147093
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: chatgpt-4o-latest
+          provider: openai
+        prompt_template:
+        - id: 5b308975-3d4c-4a16-9ae3-7605be88cf3c
+          role: system
+          text: 你是一个数字格式转换工具，输入是数字1到12，输出是YYYYMM。
+        - id: 0604bce6-41e1-4681-b8be-5976916eb24f
+          role: user
+          text: '输入：{{#1739623467687.time#}}
+
+            输出：只输出数字YYYYMM 。YYYY代表的年份值。推理内容不输出。
+
+
+            根据当前系统年份和给定的当前月份创建一个提示模板，用于将给定的月份数字转换为特定的日期格式 YYYYMM。其思路是，如果输入的月份在当前月份之前，则应使用当前年份；否则，应使用前一年。然后，将其格式化为
+            YYYYMM。
+
+
+            取 1 到 12 之间的月份数字，并将其转换为以两位数格式结合相应年份和月份的字符串。假设当前年份为 2025 年，当前月份为二月，即 2。
+
+
+            例如，如果输入月份为 1（一月），由于它早于二月，所以应该在 2025 年，因此输出为 202501。如果输入为 2（二月），它等于当前月份，所以应该在
+            2024 年，即 202402。同样，三月至十二月的任何月份也应在 2024 年。
+
+
+            我需要确保月份始终格式化为两位数，因此 1 至 9 月份应有一个前导零。
+
+
+            **说明 (<instructions>)：**  根据当前年份和月份将月份数字转换为 YYYYMM 字符串。
+
+
+            然后，我需要概述以下步骤：
+
+
+            1. 确定当前年份和月份。对于本练习，假设当前年份为 2025 年，当前月份为 2（二月）。
+
+
+            2. 取输入的月份数（介于 1 和 12 之间）。
+
+
+            3. 将输入的月份与当前月份进行比较：
+
+
+            a. 如果输入的月份小于当前月份，则使用当前年份。
+
+
+            b. 如果输入的月份等于或大于当前月份，则使用上一年。
+
+
+            4. 将年份和月份格式化为 YYYYMM 格式的字符串，确保月份始终为两位数。
+
+
+            我还应该提到，AI 不应在输出中包含任何解释或额外文本；它应该只生成 YYYYMM 字符串。
+
+            示例：
+
+            假设当前时间是 2025 年 2 月
+
+
+            输入 1 ，输出 202501
+
+            输入2，输出 202402
+
+            输入 3 ，输出 202403
+
+            输入 4 ，输出 202404
+
+            输入 5，输出 202405
+
+            输入 6，输出 202406
+
+            输入 7，输出 202407
+
+            输入 8，输出 202408
+
+            输入9，输出 202409
+
+            输入 10，输出 202410
+
+            输入 11，输出 202411
+
+            输入 12，输出 202412'
+        selected: false
+        title: LLM 2 把前面的数字转为YYYYMM格式
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 97
+      id: '1739630972959'
+      position:
+        x: 1426.594601118132
+        y: 315.33831174147093
+      positionAbsolute:
+        x: 1426.594601118132
+        y: 315.33831174147093
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        instruction: 从文本中提取数字，并将其作为参数输出；
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-3.5-turbo
+          provider: openai
+        parameters:
+        - description: 提取出时间格式做参数传给API
+          name: yyyymm
+          required: false
+          type: string
+        query:
+        - '1739630972959'
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: 提取出纯YYYYMM字符串
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 97
+      id: '1739634421282'
+      position:
+        x: 1707.6547224192748
+        y: 315.33831174147093
+      positionAbsolute:
+        x: 1707.6547224192748
+        y: 315.33831174147093
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: chatgpt-4o-latest
+          provider: openai
+        prompt_template:
+        - id: 06885fcc-2104-4b93-b6f6-23ed941359e4
+          role: system
+          text: 你是数据分析专家，分析输入的json内容，回答用户问题
+        - id: 0f6ce46d-4ade-463a-8a75-7b5f154c3e4b
+          role: user
+          text: '输入是：{{#1739628600956.body#}}
+
+            问题是：{{#sys.query#}}
+
+            输出：根据提供的信息，我们需要计算{{#1739623467687.name#}}{{#1739634421282.yyyymm#}}的工资
+
+            实现要求：
+
+            薪资结构包括支付（基本工资、职位津贴、通勤津贴、平日加班费、夜间加班费）、扣除项目（健康保险、厚生年金保险、护理保险、雇用保险、预扣所得税）和费用结算。员工{{#1739623467687.name#}}披露如下信息（出生日期：1993-04-26、基本工资：28万日元、工作津贴：0日元、通勤津贴：0日元、被抚养人：0、视同加班：30小时），2024年12月工作160小时，未进行任何费用报销。健康保险、厚生年金保险、护理保险的计算请使用国民健康保险协会的东京保险费表。请依据国税厅公佈的2024年度薪资收入预扣税表A栏，计算预扣所得税。请在下面以JSON格式返回计算结果。
+            {BaseSalary（基本工资）、ProjectSalary（工作津贴）、TravelFare（通勤津贴）、WDOTSalary（工作日加班费）、NightOTSalary（夜间加班费）、HealthInsurance（健康保险）、EndowInsurance（员工养老保险）、LongCareInsurance（长期护理保险）、HireInsurance（失业保险）、IncomeTax（预扣所得税）、Expense（费用结算）、aiResult（gpt
+            的输出，格式为{{#1739623467687.name#}}{{#1739634421282.yyyymm#}}的工资计算完成。基本工资xxx日元，加班费xxx日元，扣除社会保险（健康保险、养老保险、失业保险）及预扣所得税后，实际到手工资约xxx）}。'
+        selected: false
+        title: 综合处理
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 97
+      id: '1739669310378'
+      position:
+        x: 2369.039152517346
+        y: 315.33831174147093
+      positionAbsolute:
+        x: 2369.039152517346
+        y: 315.33831174147093
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -608.842015742759
+      y: 56.61854243501318
+      zoom: 0.7484614933963489
